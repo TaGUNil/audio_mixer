@@ -29,11 +29,21 @@ public:
                unsigned long sampling_rate,
                unsigned int channels);
 
-    int start(void *file, Mode mode, uint16_t level, Fade fade_mode = Fade::None, uint16_t fade_length_ms = 0);
+    int start(void *file,
+              Mode mode,
+              bool preload = true,
+              uint16_t level = AudioTrack::UNIT_LEVEL,
+              Fade fade_mode = Fade::None,
+              uint16_t fade_length_ms = 0);
 
-    void fade(int track, uint16_t level, Fade fade_mode = Fade::None, uint16_t fade_length_ms = 0);
+    void fade(int track,
+              uint16_t level,
+              Fade fade_mode = Fade::None,
+              uint16_t fade_length_ms = 0);
 
-    void stop(int track, Fade fade_mode = Fade::None, uint16_t fade_length_ms = 0);
+    void stop(int track,
+              Fade fade_mode = Fade::None,
+              uint16_t fade_length_ms = 0);
 
     void clear();
 

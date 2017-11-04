@@ -71,12 +71,12 @@ int main(int argc, char *argv[])
     uint16_t level_1 = static_cast<uint16_t>(atof(argv[4]) * AudioTrack::UNIT_LEVEL);
     uint16_t level_2 = static_cast<uint16_t>(atof(argv[5]) * AudioTrack::UNIT_LEVEL);
 
-    if (mixer.start(wav_file_1, mode, level_1) < 0) {
+    if (mixer.start(wav_file_1, mode, true, level_1) < 0) {
         fprintf(stderr, "Cannot play file 1\n");
         return 1;
     }
 
-    if (mixer.start(wav_file_2, mode, level_2) < 0) {
+    if (mixer.start(wav_file_2, mode, true, level_2) < 0) {
         fprintf(stderr, "Cannot play file 2\n");
         return 1;
     }
