@@ -48,12 +48,7 @@ int AudioMixer::start(void *file,
 {
     for (int track = 0; track < TRACKS; track++) {
         if (!tracks_[track].running()) {
-            if (tracks_[track].start(file, mode, preload, level, fade_mode, fade_length_ms)) {
-                if (tracks_[track].samplingRate() != sampling_rate_) {
-                    tracks_[track].stop();
-                    return -1;
-                }
-
+            if (start(track, file, mode, preload, level, fade_mode, fade_length_ms)) {
                 return track;
             }
 
@@ -62,6 +57,30 @@ int AudioMixer::start(void *file,
     }
 
     return -1;
+}
+
+bool AudioMixer::start(int track,
+                       void *file,
+                       Mode mode,
+                       bool preload,
+                       uint16_t level,
+                       Fade fade_mode,
+                       uint16_t fade_length_ms)
+{
+    if (tracks_[track].running()) {
+        tracks_[track].stop();
+    }
+
+    if (!tracks_[track].start(file, mode, preload, level, fade_mode, fade_length_ms)) {
+        return false;
+    }
+
+    if (tracks_[track].samplingRate() != sampling_rate_) {
+        tracks_[track].stop();
+        return false;
+    }
+
+    return true;
 }
 
 void AudioMixer::fade(int track,
