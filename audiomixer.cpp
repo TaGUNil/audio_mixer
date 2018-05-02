@@ -96,7 +96,7 @@ void AudioMixer::fade(int track,
     }
 
     if (tracks_[track].running()) {
-        tracks_[track].fade(level, fade_mode, fade_length_ms);\
+        tracks_[track].fade(level, fade_mode, fade_length_ms);
     }
 }
 
@@ -109,7 +109,7 @@ void AudioMixer::stop(int track,
     }
 
     if (tracks_[track].running()) {
-        tracks_[track].stop(fade_mode, fade_length_ms);\
+        tracks_[track].stop(fade_mode, fade_length_ms);
     }
 }
 
