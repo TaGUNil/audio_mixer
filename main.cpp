@@ -39,6 +39,11 @@ size_t read_callback(void *file_context, uint8_t *buffer, size_t length)
                  reinterpret_cast<FILE *>(file_context));
 }
 
+void track_end_callback(int track)
+{
+    fprintf(stderr, "Track %d ended\n", track);
+}
+
 int main(int argc, char *argv[])
 {
     if (argc < 6) {
@@ -63,6 +68,7 @@ int main(int argc, char *argv[])
     AudioMixer mixer(&tell_callback,
                      &seek_callback,
                      &read_callback,
+                     &track_end_callback,
                      sampling_rate,
                      2);
 
