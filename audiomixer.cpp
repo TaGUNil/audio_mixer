@@ -32,10 +32,10 @@ AudioMixer::AudioMixer(WavReader::TellCallback tell_callback,
       tracks_()
 {
     for (int track = 0; track < TRACKS; track++) {
-        tracks_[track] = Track(tell_callback,
-                               seek_callback,
-                               read_callback,
-                               channels);
+        tracks_[track].init(tell_callback,
+                            seek_callback,
+                            read_callback,
+                            channels);
     }
 }
 
