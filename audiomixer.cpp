@@ -31,7 +31,8 @@ AudioMixer::AudioMixer(WavReader::TellCallback tell_callback,
     : tracks_(),
       track_end_callback_(track_end_callback),
       sampling_rate_(sampling_rate),
-      channels_(channels)
+      channels_(channels),
+      level_(UNIT_LEVEL)
 
 {
     for (int track = 0; track < TRACKS; track++) {
@@ -40,6 +41,15 @@ AudioMixer::AudioMixer(WavReader::TellCallback tell_callback,
                             read_callback,
                             channels);
     }
+}
+
+void AudioMixer::scale(uint16_t level)
+{
+    if (level > MAX_LEVEL) {
+        level = MAX_LEVEL;
+    }
+
+    level_ = level;
 }
 
 int AudioMixer::start(void *file,
@@ -90,6 +100,10 @@ void AudioMixer::fade(uint16_t level,
                       AudioMixer::Fade fade_mode,
                       uint16_t fade_length_ms)
 {
+    if (level > MAX_LEVEL) {
+        level = MAX_LEVEL;
+    }
+
     for (int track = 0; track < TRACKS; track++) {
         fade(track, level, fade_mode, fade_length_ms);
     }
@@ -173,7 +187,7 @@ size_t AudioMixer::play(int16_t *buffer, size_t frames)
         for (size_t frame_index = 0; frame_index < batch_frames; frame_index++) {
             for (unsigned int channel = 0; channel < channels_; channel++) {
                 size_t offset = channels_ * frame_index + channel;
-                buffer[offset] = saturate(sample_buffer_[offset]);
+                buffer[offset] = saturate((sample_buffer_[offset] * level_) / UNIT_LEVEL);
             }
         }
 

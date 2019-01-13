@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
 
     AudioTrack::Mode mode = AudioTrack::Mode::Single;
 
-    uint16_t level_1 = static_cast<uint16_t>(atof(argv[4]) * AudioTrack::UNIT_LEVEL);
-    uint16_t level_2 = static_cast<uint16_t>(atof(argv[5]) * AudioTrack::UNIT_LEVEL);
+    uint16_t level_1 = static_cast<uint16_t>(atof(argv[4]) * AudioMixer::UNIT_LEVEL);
+    uint16_t level_2 = static_cast<uint16_t>(atof(argv[5]) * AudioMixer::UNIT_LEVEL);
 
     if (mixer.start(wav_file_1, mode, true, level_1) < 0) {
         fprintf(stderr, "Cannot play file 1\n");
