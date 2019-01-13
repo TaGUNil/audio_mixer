@@ -26,11 +26,10 @@ AudioMixer::AudioMixer(WavReader::TellCallback tell_callback,
                        WavReader::SeekCallback seek_callback,
                        WavReader::ReadCallback read_callback,
                        TrackEndCallback track_end_callback,
-                       unsigned long sampling_rate,
                        unsigned int channels)
     : tracks_(),
       track_end_callback_(track_end_callback),
-      sampling_rate_(sampling_rate),
+      sampling_rate_(0),
       channels_(channels),
       level_(UNIT_LEVEL)
 
@@ -89,8 +88,13 @@ bool AudioMixer::start(int track,
     }
 
     if (tracks_[track].samplingRate() != sampling_rate_) {
-        tracks_[track].stop();
-        return false;
+        for (int other_track = 0; other_track < TRACKS; other_track++) {
+            if (other_track != track) {
+                stop(other_track);
+            }
+        }
+
+        sampling_rate_ = tracks_[track].samplingRate();
     }
 
     return true;

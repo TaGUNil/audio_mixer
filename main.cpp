@@ -46,22 +46,20 @@ void track_end_callback(int track)
 
 int main(int argc, char *argv[])
 {
-    if (argc < 6) {
-        fprintf(stderr, "Usage: %s <sampling_rate> <file_1> <file_2> <level_1> <level_2>\n", argv[0]);
+    if (argc < 5) {
+        fprintf(stderr, "Usage: %s <file_1> <file_2> <level_1> <level_2>\n", argv[0]);
         return 1;
     }
 
-    unsigned long sampling_rate = static_cast<unsigned long>(atoi(argv[1]));
-
-    FILE *wav_file_1 = fopen(argv[2], "r");
+    FILE *wav_file_1 = fopen(argv[1], "r");
     if (wav_file_1 == nullptr) {
-        fprintf(stderr, "Cannot open file \"%s\"\n", argv[2]);
+        fprintf(stderr, "Cannot open file \"%s\"\n", argv[1]);
         return 1;
     }
 
-    FILE *wav_file_2 = fopen(argv[3], "r");
+    FILE *wav_file_2 = fopen(argv[2], "r");
     if (wav_file_2 == nullptr) {
-        fprintf(stderr, "Cannot open file \"%s\"\n", argv[3]);
+        fprintf(stderr, "Cannot open file \"%s\"\n", argv[2]);
         return 1;
     }
 
@@ -69,13 +67,12 @@ int main(int argc, char *argv[])
                      &seek_callback,
                      &read_callback,
                      &track_end_callback,
-                     sampling_rate,
                      2);
 
     AudioTrack::Mode mode = AudioTrack::Mode::Single;
 
-    uint16_t level_1 = static_cast<uint16_t>(atof(argv[4]) * AudioMixer::UNIT_LEVEL);
-    uint16_t level_2 = static_cast<uint16_t>(atof(argv[5]) * AudioMixer::UNIT_LEVEL);
+    uint16_t level_1 = static_cast<uint16_t>(atof(argv[3]) * AudioMixer::UNIT_LEVEL);
+    uint16_t level_2 = static_cast<uint16_t>(atof(argv[4]) * AudioMixer::UNIT_LEVEL);
 
     if (mixer.start(wav_file_1, mode, true, level_1) < 0) {
         fprintf(stderr, "Cannot play file 1\n");

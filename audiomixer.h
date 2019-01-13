@@ -33,7 +33,6 @@ public:
                WavReader::SeekCallback seek_callback,
                WavReader::ReadCallback read_callback,
                TrackEndCallback track_end_callback,
-               unsigned long sampling_rate,
                unsigned int channels);
 
     void scale(uint16_t level);
